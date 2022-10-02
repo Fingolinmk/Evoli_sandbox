@@ -1,2 +1,2 @@
-def rosenbrock(x,y,a=1,b=100):
-    return (a-x)**2 + b *(y-x**2)**2
+def rosenbrock(x, y, a=1, b=100):
+    return (a - x) ** 2 + b * (y - x**2) ** 2

@@ -1,10 +1,10 @@
 from cmath import sqrt
 import math
-from numpy import exp, sqrt, e, cos, pi,isnan
+from numpy import exp, sqrt, e, cos, pi, isnan
 
 
 def ackley(x, y, a=20, b=0.2, c=pi * 2):
-    res=(
+    res = (
         -a
         * exp(
             (
@@ -15,8 +15,7 @@ def ackley(x, y, a=20, b=0.2, c=pi * 2):
         + a
         + e
     )
-    
+
     print(res[isnan(res)])
-    
 
     return res
