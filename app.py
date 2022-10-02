@@ -58,5 +58,7 @@ band = Band(base="base", lower="worst", upper="best", source=source, level='unde
 
 benchmark.add_layout(band)
 benchmark.line(x="base", y="avg", source=source)
+benchmark.line(x="base", y="best", source=source)
+benchmark.line(x="base", y="worst", source=source)
 st.bokeh_chart(p)
 st.bokeh_chart(benchmark)
