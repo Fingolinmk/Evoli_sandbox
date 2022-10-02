@@ -43,11 +43,13 @@ def recombinate(generation: list, offspring: int) -> list:
 def mutate(generation: list) -> list:
     mutated_gen = []
     for elm in generation:
-        elm["x"] = elm["x"]+gauss(0, elm["x_sigma"])
-        elm["y"] = elm["y"]+gauss(0, elm["y_sigma"])
+        delta_x = gauss(0, elm["x_sigma"])
+        delta_y = gauss(0, elm["y_sigma"])
+        elm["x"] = elm["x"]+delta_x
+        elm["y"] = elm["y"]+delta_y
 
-        elm["x_sigma"] = elm["x_sigma"]+gauss(0, elm["x_sigma"])
-        elm["y_sigma"] = elm["y_sigma"]+gauss(0, elm["y_sigma"])
+        elm["x_sigma"] = abs(elm["x_sigma"]+gauss(delta_x, elm["x_sigma"]))
+        elm["y_sigma"] = abs(elm["y_sigma"]+gauss(delta_y, elm["y_sigma"]))
 
         mutated_gen.append(elm)
     return mutated_gen

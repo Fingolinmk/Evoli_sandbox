@@ -1,11 +1,11 @@
-from evolve.evoli import select_best, start_randomly
+from evolve.evoli import mutate, recombinate, select_best, start_randomly
 import streamlit as st
 from bokeh.plotting import figure, ColumnDataSource
 from bokeh.models import Band
 import numpy as np
 from benchmark_functions.ackley import ackley
 from benchmark_functions.rosenbrock import rosenbrock
-
+print("----")
 st.title("Benchmark test")
 N = 500
 x = np.linspace(-10, 10, N)
@@ -37,16 +37,20 @@ band_plot_data = {
     "base": [],
 }
 
-for i in range(iterations):
-    band_plot_data["base"].append(float(i))
-    start = start_randomly(qual_fun, number_of_individuals=100)
-    band_plot_data["best"].append(start[0]["z"])
-    band_plot_data["worst"].append(start[-1]["z"])
-    z = [ind["z"] for ind in start]
 
+generation = start_randomly(qual_fun, number_of_individuals=1000)
+for i in range(iterations):
+    generation.extend(recombinate(generation, 500))
+    generation = mutate(generation)
+    generation = select_best(generation, 100, qual_fun)
+
+    band_plot_data["base"].append(float(i))
+    band_plot_data["best"].append(generation[0]["z"])
+    band_plot_data["worst"].append(generation[-1]["z"])
+    z = [ind["z"] for ind in generation]
     band_plot_data["avg"].append(sum(z)/len(z))
 
-    for ind in start[0:1]:
+    for ind in generation[0:1]:
         p.hex(x=ind["x"], y=ind["y"], color="cyan", size=10)
 
 
@@ -58,7 +62,7 @@ band = Band(base="base", lower="worst", upper="best", source=source, level='unde
 
 benchmark.add_layout(band)
 benchmark.line(x="base", y="avg", source=source)
-benchmark.line(x="base", y="best", source=source)
-benchmark.line(x="base", y="worst", source=source)
+benchmark.line(x="base", y="best", source=source, color="grey")
+benchmark.line(x="base", y="worst", source=source, color="grey")
 st.bokeh_chart(p)
 st.bokeh_chart(benchmark)
