@@ -8,9 +8,9 @@ from random import gauss
 def start_randomly(
     quality_function,
     number_of_individuals: int = 10,
-    x_range=(0, 1000),
+    x_range=(0, -1000),
     x_sigma=1,
-    y_range=(0, 1000),
+    y_range=(0, -1000),
     y_sigma=1,
 ):
     ret = []

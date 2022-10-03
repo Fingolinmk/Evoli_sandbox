@@ -26,7 +26,7 @@ p.x_range.range_padding = p.y_range.range_padding = 0
 
 # must give a vector of image data for image parameter
 p.grid.grid_line_width = 0
-iterations = st.slider("nnumber of iteration", 1, 100)
+iterations = st.slider("Number of iteration", 1, 300)
 band_plot_data = {
     "best": [],
     "worst": [],
@@ -40,6 +40,7 @@ xmax = ymax = 10
 
 
 generation = start_randomly(qual_fun, number_of_individuals=1000)
+line_data = {"x": [], "y": []}
 for i in range(iterations):
     generation.extend(recombinate(generation, 2000))
     generation = select_best(generation, 1000, qual_fun)
@@ -53,11 +54,14 @@ for i in range(iterations):
     winners.append(generation[0])
     for ind in generation[0:1]:
         p.hex(x=ind["x"], y=ind["y"], color="cyan", size=10)
+        line_data["x"].append(ind["x"])
+        line_data["y"].append(ind["y"])
         ymin = min(ymin, ind["y"] * 1.05)
         ymax = max(ymax, ind["y"] * 1.05)
 
         xmin = min(xmin, ind["x"] * 1.05)
         xmax = max(xmax, ind["x"] * 1.05)
+p.line(x="x", y="y", source=line_data, color="grey")
 
 benchmark = figure(x_axis_label="iterations",
                    y_axis_label="best fit (lower = better)")
@@ -92,7 +96,5 @@ p.image(
     level="image",
 )
 
-
 st.bokeh_chart(p)
 st.bokeh_chart(benchmark)
-st.write(winners)
