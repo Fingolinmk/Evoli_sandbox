@@ -1,6 +1,4 @@
-from cmath import sqrt
-import math
-from numpy import exp, sqrt, e, cos, pi, isnan
+from numpy import exp, sqrt, e, cos, pi
 
 
 def ackley(x, y, a=20, b=0.2, c=pi * 2):

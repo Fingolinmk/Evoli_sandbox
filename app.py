@@ -1,3 +1,4 @@
+from benchmark_functions.bukin import bukin
 from evolve.evoli import mutate, recombinate, select_best, start_randomly
 import streamlit as st
 from bokeh.plotting import figure, ColumnDataSource
@@ -9,12 +10,15 @@ from benchmark_functions.rosenbrock import rosenbrock
 print("----")
 st.title("Benchmark test")
 qual_fun = None
-selection = st.selectbox("Select a benchmark function", ["Ackley", "Rosenbrock"])
+selection = st.selectbox("Select a benchmark function", [
+                         "Ackley", "Bukin", "Rosenbrock"])
 N = 500
 if selection == "Ackley":
     qual_fun = ackley
 elif selection == "Rosenbrock":
     qual_fun = rosenbrock
+elif selection == "Bukin":
+    qual_fun = bukin
 else:
     z = np.zeros(N, N)
 p = figure(tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")])
@@ -55,7 +59,8 @@ for i in range(iterations):
         xmin = min(xmin, ind["x"] * 1.05)
         xmax = max(xmax, ind["x"] * 1.05)
 
-benchmark = figure(x_axis_label="iterations", y_axis_label="best fit (lower = better)")
+benchmark = figure(x_axis_label="iterations",
+                   y_axis_label="best fit (lower = better)")
 source = ColumnDataSource(band_plot_data)
 band = Band(
     base="base",
